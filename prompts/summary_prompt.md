@@ -12,7 +12,7 @@ formal citations, timestamps, links, a code fence, or speaker attributions that
 the transcript does not establish. Evidence is not a formal citation: include
 concrete evidence inline, immediately after the precise chain step it supports.
 
-Use this exact top-level structure and order:
+Use the following exact top-level structure and order. If a section does not have content, keep its exact heading and write `No relevant content.` below it.
 
 # <show>: <title>
 
