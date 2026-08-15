@@ -123,7 +123,7 @@ After the downloader and scrubber have created queue records, run the
 summarizer against every eligible episode with:
 
 ```bash
-uv run python summarizer.py --config config.json
+uv run python -m podcast_digest.summarizer --config config.json
 ```
 
 The queue is the selection mechanism: it retries pending and failed summaries

@@ -1,4 +1,5 @@
 .env
+config.json
 
 # Python environment and test artifacts
 .venv/
@@ -20,6 +21,11 @@ logs/
 test-results/
 playwright-report/
 blob-report/
+
+# Python build artifacts
+dist/
+build/
+*.egg-info/
 
 # macOS
 .DS_Store

@@ -6,8 +6,7 @@ from pathlib import Path
 
 import pytest
 
-import downloader
-import summarizer
+from podcast_digest import downloader, summarizer
 
 
 PROMPT = "Summarize the supplied episode. Return Markdown only.\n"

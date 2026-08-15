@@ -1,12 +1,12 @@
 # Poddigest — Main Orchestrator Design Notes
 
-`poddigest.py` is the primary user-facing command for the podcast workflow. It
+`poddigest` is the primary user-facing command for the podcast workflow. It
 coordinates the existing components without absorbing their source, transcript,
 prompt, or delivery logic.
 
 ## Purpose and boundary
 
-`poddigest.py` runs the workflow in this order:
+`poddigest` runs the workflow in this order:
 
 1. `downloader.py`: discover and download transcripts.
 2. `transcript_scrubber.py`: create scrubbed transcripts.
@@ -30,13 +30,13 @@ queue or a run-history product.
 The ordinary command is:
 
 ```text
-uv run python poddigest.py
+uv run poddigest
 ```
 
 It defaults to `config.json` and its sibling `queue.json`.
 
 ```text
-uv run python poddigest.py [--config PATH] [--queue PATH]
+uv run poddigest [--config PATH] [--queue PATH]
                             [--stage download|scrub|summarize|delivery]
                             [--discover-only | --add-episode YOUTUBE_URL]
                             [--force] [--verbose] [--no-live]
@@ -69,14 +69,14 @@ precedence rules.
 For an episode from a show that is not monitored, use:
 
 ```text
-uv run python poddigest.py --add-episode "https://youtu.be/<video-id>"
+uv run poddigest --add-episode "https://youtu.be/<video-id>"
 ```
 
 The command accepts standard YouTube watch, short-link, Shorts, Live, and
 embed URLs; normalizes the source URL; and atomically creates a pending queue
 record. A repeated video ID reports `Already queued` and preserves its existing
 lifecycle state. It does not create a configured show or alter monitored-show
-discovery state. Run ordinary `poddigest.py` later to process the queued item.
+discovery state. Run ordinary `poddigest` later to process the queued item.
 
 ## Progress display and final report
 

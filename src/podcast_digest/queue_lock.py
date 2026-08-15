@@ -1,4 +1,4 @@
-"""Single-writer locking for the atomically replaced episode queue.
+"""Single-writer locking for the atomically replaced Podcast Digest queue.
 
 ``queue.json`` is replaced on every durable update, so locking that file would
 lock an old inode after the first write. This module locks a stable sibling
@@ -39,7 +39,7 @@ class QueueLock:
             self._handle.close()
             self._handle = None
             raise QueueLockUnavailable(
-                f"Another podcast summarizer run is already using {self.queue_path.name}."
+                f"Another Podcast Digest run is already using {self.queue_path.name}."
             ) from error
         return self
 

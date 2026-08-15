@@ -49,6 +49,6 @@ transcripts/
 The implementation will include fixture-based unit tests for both timestamp
 formats, timestamp-free text, speaker markers, and idempotence.
 
-Use `python transcript_scrubber.py --config config.json --force` to recreate
+Use `uv run python -m podcast_digest.transcript_scrubber --config config.json --force` to recreate
 existing scrubbed transcripts from their raw source files after changing the
 normalization rules.

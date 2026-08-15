@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from downloader import (
+from podcast_digest.downloader import (
     ConfigurationError,
     load_config,
     load_queue,
@@ -19,7 +19,7 @@ from downloader import (
     utc_now,
     write_json_atomically,
 )
-from queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable
 
 
 TIMESTAMP_PREFIX = re.compile(r"^(?:(?:\d{1,2}:)?\d{1,2}:\d{2})(?=\s|$)\s*")

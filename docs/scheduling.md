@@ -1,7 +1,7 @@
 # Podcast Summarizer — Scheduled Operation
 
 The scheduler uses a per-user macOS `LaunchAgent`, not cron. It runs the same
-ordinary `poddigest.py` workflow at 15:00 local time every Friday, writing its
+ordinary `poddigest` workflow at 15:00 local time every Friday, writing its
 standard output and errors to `logs/launchd/`. The normal per-run operational
 log remains under `logs/runs/`.
 
@@ -27,22 +27,22 @@ From the repository root, run:
 ```
 
 The installer substitutes your local repository path into the tracked template,
-then writes it to `~/Library/LaunchAgents/com.ccm.podcast-summarizer.plist`,
+then writes it to `~/Library/LaunchAgents/com.ccm.poddigest.plist`,
 loads it for the current macOS login session, and enables it. No run is
 triggered during installation. To verify the job is registered:
 
 ```text
-launchctl print gui/$(id -u)/com.ccm.podcast-summarizer
+launchctl print gui/$(id -u)/com.ccm.poddigest
 ```
 
 To run it once on demand (useful after installing), use:
 
 ```text
-launchctl kickstart -k gui/$(id -u)/com.ccm.podcast-summarizer
+launchctl kickstart -k gui/$(id -u)/com.ccm.poddigest
 ```
 
 The scheduled runner uses `uv run --locked` and a known Homebrew/system PATH,
-then calls `poddigest.py --no-live`. It therefore sees the project-local
+then calls `poddigest --no-live`. It therefore sees the project-local
 `.env` for the optional Instapaper reminder, while keeping redirected output
 free of terminal control sequences.
 
@@ -63,6 +63,6 @@ local time zone (Pacific time on this Mac). Edit those values, then rerun the
 installer to reload the job. To stop and remove the installed job:
 
 ```text
-launchctl bootout gui/$(id -u)/com.ccm.podcast-summarizer
-rm ~/Library/LaunchAgents/com.ccm.podcast-summarizer.plist
+launchctl bootout gui/$(id -u)/com.ccm.poddigest
+rm ~/Library/LaunchAgents/com.ccm.poddigest.plist
 ```

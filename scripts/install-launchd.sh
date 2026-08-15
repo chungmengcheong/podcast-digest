@@ -1,10 +1,10 @@
 #!/bin/zsh
-# Install or update this user's weekly Podcast Summarizer LaunchAgent.
+# Install or update this user's weekly Podcast Digest LaunchAgent.
 set -euo pipefail
 
 script_dir=${0:A:h}
 repository_dir=${script_dir:h}
-label="com.ccm.podcast-summarizer"
+label="com.ccm.poddigest"
 source_plist="$repository_dir/launchd/$label.plist"
 target_dir="$HOME/Library/LaunchAgents"
 target_plist="$target_dir/$label.plist"

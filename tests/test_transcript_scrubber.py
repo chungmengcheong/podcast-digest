@@ -3,8 +3,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import downloader
-import transcript_scrubber
+from podcast_digest import downloader, transcript_scrubber
 
 
 def test_scrub_text_removes_timestamp_only_lines_and_joins_spoken_text() -> None:

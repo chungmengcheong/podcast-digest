@@ -15,9 +15,16 @@ from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
 
-from downloader import ConfigurationError, load_config, load_queue, stage_state, utc_now, write_json_atomically
-from queue_lock import QueueLock, QueueLockUnavailable
-from transcript_scrubber import write_text_atomically
+from podcast_digest.downloader import (
+    ConfigurationError,
+    load_config,
+    load_queue,
+    stage_state,
+    utc_now,
+    write_json_atomically,
+)
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest.transcript_scrubber import write_text_atomically
 
 
 InstapaperSender = Callable[[str, str, str, str, str], None]

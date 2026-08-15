@@ -5,11 +5,8 @@ from pathlib import Path
 
 import pytest
 
-import delivery
-import downloader
-import poddigest
-import summarizer
-import transcript_scrubber
+from podcast_digest import delivery, downloader, summarizer, transcript_scrubber
+from podcast_digest import cli as poddigest
 
 
 def write_config(tmp_path: Path) -> Path:

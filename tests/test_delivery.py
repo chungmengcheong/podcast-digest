@@ -5,8 +5,7 @@ from pathlib import Path
 
 import pytest
 
-import downloader
-import delivery
+from podcast_digest import delivery, downloader
 
 
 def sample_config(obsidian_target_dir: Path) -> dict:

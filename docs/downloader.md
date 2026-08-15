@@ -6,11 +6,9 @@ This is a living record of decisions and system-design thinking.
 
 The downloader component discovers episodes, records newly seen source IDs/URLs in the queue, accepts one-off YouTube episodes, and retrieves transcripts.
 
-## Input / Output contract
+## Input Contract
 
-### Input
-
-#### `config.json`
+### `config.json`
 
 `config.json` is user-owned configuration. It names the shows to monitor and the local paths the tool may use. It does not change after a normal run.
 
@@ -57,9 +55,9 @@ Rules:
 
 
 
-### Output
+## Output Contract
 
-#### Downloaded transcripts
+### Downloaded transcripts
 
 1. A set of unmodified downloaded transcripts in `transcripts/raw/`. Each file is named `<YYYYMMDD>-<show-id>-<video-id>-<episode-slug>.txt`, for example:
 
@@ -72,7 +70,7 @@ The source video ID makes a filename unique even if titles change or two episode
 For queues created before this layout, the scrubber recognizes a missing legacy `transcripts/<filename>.txt` path and adopts the matching file in `transcripts/raw/`, updating the queue as it does so.
 
 
-#### `queue.json`
+### `queue.json`
 
 `queue.json` is tool-owned operational state. It records discovered episodes, the outcome of each stage, and each show's last successful check. It stores all discovered episodes, not only the currently pending ones. This makes it both the work queue and the durable record used to avoid rediscovering old episodes.
 
@@ -224,10 +222,10 @@ A failed download or scrub remains retryable on the next run of its respective c
 ```text
 uv sync --group dev
 uv run pytest -q
-uv run python downloader.py --config config.json --discover-only
-uv run python downloader.py --config config.json --add-episode "https://youtu.be/<video-id>"
-uv run python downloader.py --config config.json
-uv run python transcript_scrubber.py --config config.json
+uv run python -m podcast_digest.downloader --config config.json --discover-only
+uv run python -m podcast_digest.downloader --config config.json --add-episode "https://youtu.be/<video-id>"
+uv run python -m podcast_digest.downloader --config config.json
+uv run python -m podcast_digest.transcript_scrubber --config config.json
 ```
 
 The first full downloader run will attempt the six currently queued episodes:

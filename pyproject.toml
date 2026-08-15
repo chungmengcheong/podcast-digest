@@ -1,11 +1,18 @@
 [project]
-name = "podcast-summarizer"
+name = "podcast-digest"
 version = "0.1.0"
-description = "Personal CLI for downloading podcast transcripts and producing summaries"
+description = "Personal CLI for turning podcast transcripts into an evidence-aware reading digest"
 requires-python = ">=3.12"
 dependencies = [
   "playwright==1.61.0",
 ]
+
+[project.scripts]
+poddigest = "podcast_digest.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [dependency-groups]
 dev = [
@@ -14,4 +21,3 @@ dev = [
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-pythonpath = ["."]

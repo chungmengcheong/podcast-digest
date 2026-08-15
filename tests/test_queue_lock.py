@@ -3,9 +3,9 @@ from __future__ import annotations
 import io
 from pathlib import Path
 
-import poddigest
+from podcast_digest import cli as poddigest
 import pytest
-from queue_lock import QueueLock, QueueLockUnavailable, lock_path_for
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable, lock_path_for
 
 
 def test_queue_lock_excludes_a_second_writer_and_releases_after_exit(tmp_path: Path) -> None:

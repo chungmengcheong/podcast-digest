@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
   <key>Label</key>
-  <string>com.ccm.podcast-summarizer</string>
+  <string>com.ccm.poddigest</string>
   <key>ProgramArguments</key>
   <array>
     <string>__PODDIGEST_REPOSITORY__/scripts/run-scheduled-poddigest.sh</string>

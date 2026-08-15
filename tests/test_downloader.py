@@ -5,7 +5,7 @@ from pathlib import Path
 
 import pytest
 
-import downloader
+from podcast_digest import downloader
 
 
 def channel_html(*videos: tuple[str, str]) -> str:

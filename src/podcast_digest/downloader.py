@@ -29,7 +29,7 @@ from playwright.sync_api import Error as PlaywrightError
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-from queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable
 
 
 YOUTUBE_USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0 Safari/537.36"

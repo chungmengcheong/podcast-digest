@@ -1,4 +1,4 @@
-# Podcast Summarizer
+# Podcast Digest
 
 A personal, file-first macOS CLI that turns new podcast episodes into an
 editable reading queue. It watches configured YouTube channels, retrieves
@@ -41,13 +41,16 @@ YouTube channels -> raw transcript -> scrubbed transcript -> Codex summary
 
 ```bash
 git clone <your-fork-or-repository-url>
-cd podcast-summarizer
+cd podcast-digest
 
 # Creates the locked Python environment (Python 3.12+ is required).
 uv sync --locked
 
 # Installs the Chromium binary used by Playwright.
 uv run playwright install chromium
+
+# Creates your ignored, machine-local configuration.
+cp config.example.json config.json
 ```
 
 Install and sign in to the Codex CLI before the first full run. One supported
@@ -63,7 +66,8 @@ project.
 
 ## Configure your local workflow
 
-Edit [config.json](config.json) before running:
+Copy `config.example.json` to the ignored `config.json`, then edit `config.json`
+before running:
 
 - `shows`: the YouTube channel `/videos` pages to monitor. Set `enabled` to
   `false` for any show you do not want.
@@ -87,10 +91,8 @@ Instapaper is deliberately non-blocking: a missing credential or failed
 request produces a warning after successful Obsidian delivery, not a failed
 batch.
 
-> **Before publishing a fork:** `config.json` is user-owned and currently
-> tracked. Review or replace its vault path and show list before committing
-> your own configuration. Never commit `.env`, transcripts, `queue.json`, or
-> run logs.
+Never commit `.env`, `config.json`, transcripts, `queue.json`, or run logs.
+`config.example.json` is the portable configuration template for the repository.
 
 ## Run it
 
@@ -98,13 +100,13 @@ Start with discovery only. It updates `queue.json` but does not open the
 transcript browser:
 
 ```bash
-uv run python poddigest.py --discover-only
+uv run poddigest --discover-only
 ```
 
 Then run the complete workflow:
 
 ```bash
-uv run python poddigest.py
+uv run poddigest
 ```
 
 The first full run may open Chromium. If the transcript provider asks for an
@@ -116,17 +118,17 @@ Useful targeted commands:
 
 ```bash
 # Queue one YouTube episode without adding its channel to the monitored list.
-uv run python poddigest.py --add-episode "https://youtu.be/<video-id>"
+uv run poddigest --add-episode "https://youtu.be/<video-id>"
 
 # Retry only one stage. Prerequisites are not run implicitly.
-uv run python poddigest.py --stage download
-uv run python poddigest.py --stage scrub
-uv run python poddigest.py --stage summarize
-uv run python poddigest.py --stage delivery
+uv run poddigest --stage download
+uv run poddigest --stage scrub
+uv run poddigest --stage summarize
+uv run poddigest --stage delivery
 
 # Regenerate successful scrubbed transcripts or summaries after changing their inputs.
-uv run python poddigest.py --stage scrub --force
-uv run python poddigest.py --stage summarize --force
+uv run poddigest --stage scrub --force
+uv run poddigest --stage summarize --force
 ```
 
 The queue retains per-stage success, failure, and retry information. An
@@ -149,7 +151,7 @@ run. The job writes redirected output to `logs/launchd/`.
 Confirm the schedule:
 
 ```bash
-launchctl print gui/$(id -u)/com.ccm.podcast-summarizer
+launchctl print gui/$(id -u)/com.ccm.poddigest
 ```
 
 The workflow uses a non-blocking queue lock. If a manual run is active when
@@ -163,11 +165,11 @@ For troubleshooting, changing the schedule, or removing the job, see
 
 | Path | Role |
 |---|---|
-| `poddigest.py` | Main command that coordinates the full workflow. |
-| `downloader.py` | Channel discovery and transcript download. |
-| `transcript_scrubber.py` | Deterministic transcript normalization. |
-| `summarizer.py` | Codex CLI invocation and output validation. |
-| `delivery.py` | Collation, Obsidian delivery, and optional Instapaper reminder. |
+| `src/podcast_digest/cli.py` | Main command that coordinates the full workflow. |
+| `src/podcast_digest/downloader.py` | Channel discovery and transcript download. |
+| `src/podcast_digest/transcript_scrubber.py` | Deterministic transcript normalization. |
+| `src/podcast_digest/summarizer.py` | Codex CLI invocation and output validation. |
+| `src/podcast_digest/delivery.py` | Collation, Obsidian delivery, and optional Instapaper reminder. |
 | `prompts/summary_prompt.md` | Editable summary instructions. |
 | `queue.json` | Ignored runtime state and retry record. |
 | `docs/` | Component contracts and operating notes. |

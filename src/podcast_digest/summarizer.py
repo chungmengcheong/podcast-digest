@@ -14,7 +14,7 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from downloader import (
+from podcast_digest.downloader import (
     USER_INJECTED_SHOW_ID,
     ConfigurationError,
     load_config,
@@ -23,8 +23,8 @@ from downloader import (
     utc_now,
     write_json_atomically,
 )
-from transcript_scrubber import write_text_atomically
-from queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest.transcript_scrubber import write_text_atomically
 
 
 REQUIRED_HEADINGS = (

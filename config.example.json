@@ -20,7 +20,7 @@
     "prompt_path": "prompts/summary_prompt.md"
   },
   "delivery": {
-    "obsidian_target_dir": "/Users/ccm/Library/Mobile Documents/iCloud~md~obsidian/Documents/Notes/z_to_read",
+    "obsidian_target_dir": "/absolute/path/to/your/Obsidian/Clippings",
     "instapaper_url": "http://www.nourl.com"
   },
   "shows": [
@@ -34,18 +34,6 @@
       "id": "20vc",
       "display_name": "20VC",
       "youtube_videos_url": "https://www.youtube.com/@20VC/videos",
-      "enabled": true
-    },
-    {
-      "id": "iltb",
-      "display_name": "Invest Like the Best",
-      "youtube_videos_url": "https://www.youtube.com/@ILTB_Podcast/videos",
-      "enabled": true
-    },
-    {
-      "id": "lennys",
-      "display_name": "Lenny's Podcast",
-      "youtube_videos_url": "https://www.youtube.com/@LennysPodcast/videos",
       "enabled": true
     }
   ]

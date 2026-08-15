@@ -11,11 +11,8 @@ from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, TextIO
 
-import delivery
-import downloader
-import summarizer
-import transcript_scrubber
-from queue_lock import QueueLock, QueueLockUnavailable
+from podcast_digest import delivery, downloader, summarizer, transcript_scrubber
+from podcast_digest.queue_lock import QueueLock, QueueLockUnavailable
 
 
 STAGES = ("download", "scrub", "summarize", "delivery")
@@ -106,7 +103,7 @@ class RunState:
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Run the complete podcast summarizer workflow.")
+    parser = argparse.ArgumentParser(description="Run the complete Podcast Digest workflow.")
     parser.add_argument("--config", type=Path, default=Path("config.json"), help="Path to config.json.")
     parser.add_argument("--queue", type=Path, help="Path to queue.json (default: next to config).")
     parser.add_argument("--stage", choices=STAGES, help="Run only one workflow stage.")
