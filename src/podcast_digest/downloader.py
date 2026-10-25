@@ -482,11 +482,17 @@ class TranscriptBrowserSession:
     def open(self) -> None:
         if self._context is not None:
             return
-        self._playwright = sync_playwright().start()
-        self._context = self._playwright.chromium.launch_persistent_context(
-            user_data_dir=str(self.browser_profile_dir),
-            headless=self.headless,
-        )
+        playwright = sync_playwright().start()
+        try:
+            context = playwright.chromium.launch_persistent_context(
+                user_data_dir=str(self.browser_profile_dir),
+                headless=self.headless,
+            )
+        except Exception:
+            playwright.stop()
+            raise
+        self._playwright = playwright
+        self._context = context
 
     def close(self) -> None:
         if self._context is not None:

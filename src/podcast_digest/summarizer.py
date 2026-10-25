@@ -65,6 +65,12 @@ def load_summarizer_config(config: dict[str, Any]) -> dict[str, Any]:
     model = summarizer.get("model")
     if model is not None and (not isinstance(model, str) or not model.strip()):
         raise ConfigurationError("config.summarizer.model must be a non-empty string or null.")
+    effort = summarizer.get("reasoning_effort")
+    if effort is not None and (
+        not isinstance(effort, str)
+        or effort not in {"none", "low", "medium", "high", "xhigh", "max", "ultra"}
+    ):
+        raise ConfigurationError("config.summarizer.reasoning_effort must be a supported effort level or null.")
     for field_name in ("timeout_seconds", "max_input_characters"):
         value = summarizer.get(field_name)
         if not isinstance(value, int) or value <= 0:
@@ -168,11 +174,15 @@ def run_codex(prompt: str, summarizer_config: dict[str, Any], working_directory:
             summarizer_config["executable"],
             "exec",
             "--ephemeral",
+            "--ignore-user-config",
             "--sandbox",
             "read-only",
             "--output-last-message",
             str(output_path),
         ]
+        effort = summarizer_config.get("reasoning_effort")
+        if effort is not None:
+            command.extend(("--config", f'model_reasoning_effort="{effort}"'))
         model = summarizer_config.get("model")
         if isinstance(model, str) and model:
             command.extend(("--model", model))

@@ -75,6 +75,12 @@ before running:
   vault. This is where collated reading notes are copied.
 - `summarizer.executable`: use `codex` when the Codex CLI is on your `PATH`, or
   set an absolute executable path.
+- `summarizer.model`: select a model available to your CLI login. The summarizer
+  ignores global Codex configuration so desktop model and reasoning settings
+  cannot change this batch job. A null model uses the CLI's built-in default.
+- `summarizer.reasoning_effort`: set the model's reasoning effort for this job.
+  The example uses `gpt-6.1-sol` at `medium`. Omit this setting or use null to
+  use the CLI's default effort.
 - `downloader.headless`: leave this as `false` for the first successful run so
   you can complete any transcript-provider prompt. Consider `true` only after
   the browser session has proved stable.

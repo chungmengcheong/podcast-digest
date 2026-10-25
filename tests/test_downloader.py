@@ -370,6 +370,38 @@ def test_default_downloader_reuses_one_browser_session_for_the_batch(tmp_path: P
     assert sessions[0].close_count == 1
 
 
+def test_browser_session_stops_playwright_when_context_launch_fails(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    class FailingChromium:
+        def launch_persistent_context(self, **_kwargs: object) -> None:
+            raise RuntimeError("browser executable missing")
+
+    class FakePlaywright:
+        def __init__(self) -> None:
+            self.chromium = FailingChromium()
+            self.stopped = False
+
+        def stop(self) -> None:
+            self.stopped = True
+
+    playwright = FakePlaywright()
+
+    class FakeContextManager:
+        def start(self) -> FakePlaywright:
+            return playwright
+
+    monkeypatch.setattr(downloader, "sync_playwright", FakeContextManager)
+    session = downloader.TranscriptBrowserSession(tmp_path / "profile", False, 30)
+
+    with pytest.raises(RuntimeError, match="browser executable missing"):
+        session.open()
+
+    assert playwright.stopped is True
+    assert session._playwright is None
+    assert session._context is None
+
+
 def test_browser_context_failure_restarts_session_and_continues(tmp_path: Path) -> None:
     config = sample_config()
     queue = downloader.empty_queue(config["shows"])

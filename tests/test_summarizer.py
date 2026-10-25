@@ -213,14 +213,16 @@ def test_run_codex_uses_a_noninteractive_read_only_command(monkeypatch: pytest.M
     monkeypatch.setattr(summarizer.subprocess, "run", fake_run)
     result = summarizer.run_codex(
         "prompt",
-        {"executable": "codex", "model": "gpt-test", "timeout_seconds": 9},
+        {"executable": "codex", "model": "gpt-test", "reasoning_effort": "medium", "timeout_seconds": 9},
         tmp_path,
     )
 
     command = captured["command"]
     assert isinstance(command, list)
-    assert command[:4] == ["codex", "exec", "--ephemeral", "--sandbox"]
+    assert command[:5] == ["codex", "exec", "--ephemeral", "--ignore-user-config", "--sandbox"]
     assert "read-only" in command
+    config_index = command.index("--config")
+    assert command[config_index + 1] == 'model_reasoning_effort="medium"'
     assert command[-3:] == ["--model", "gpt-test", "-"]
     assert captured["kwargs"] == {
         "input": "prompt",
@@ -233,9 +235,35 @@ def test_run_codex_uses_a_noninteractive_read_only_command(monkeypatch: pytest.M
     assert result == VALID_SUMMARY
 
 
+def test_run_codex_isolates_global_config_when_model_is_unspecified(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    def fake_run(command: list[str], **kwargs: object) -> subprocess.CompletedProcess[str]:
+        assert "--ignore-user-config" in command
+        assert "--model" not in command
+        assert "--config" not in command
+        output_path = Path(command[command.index("--output-last-message") + 1])
+        output_path.write_text(VALID_SUMMARY, encoding="utf-8")
+        return subprocess.CompletedProcess(command, 0, "", "")
+
+    monkeypatch.setattr(summarizer.subprocess, "run", fake_run)
+    assert summarizer.run_codex(
+        "prompt", {"executable": "codex", "model": None, "timeout_seconds": 9}, tmp_path
+    ) == VALID_SUMMARY
+
+
 def test_load_summarizer_config_rejects_non_codex_provider() -> None:
     config = sample_config()
     config["summarizer"]["provider"] = "claude"
 
     with pytest.raises(downloader.ConfigurationError, match="must be 'codex'"):
+        summarizer.load_summarizer_config(config)
+
+
+@pytest.mark.parametrize("effort", ["", "turbo", 3, []])
+def test_load_summarizer_config_rejects_invalid_reasoning_effort(effort: object) -> None:
+    config = sample_config()
+    config["summarizer"]["reasoning_effort"] = effort
+
+    with pytest.raises(downloader.ConfigurationError, match="reasoning_effort"):
         summarizer.load_summarizer_config(config)

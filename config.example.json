@@ -14,7 +14,8 @@
   "summarizer": {
     "provider": "codex",
     "executable": "codex",
-    "model": null,
+    "model": "gpt-6.1-sol",
+    "reasoning_effort": "medium",
     "timeout_seconds": 600,
     "max_input_characters": 200000,
     "prompt_path": "prompts/summary_prompt.md"

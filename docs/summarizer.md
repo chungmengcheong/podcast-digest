@@ -28,6 +28,17 @@ The implementation will render the editable prompt at `prompts/summary_prompt.md
 
 Each successful queue record stores `summary_path` (the relative path to its Markdown artifact), `summary_provider`, `summary_model` when known, and a fingerprint of the prompt file. These are provenance, not user-facing content: they make a changed prompt or provider visible when a summary is rerun.
 
+The CLI invocation uses `--ignore-user-config` to isolate the batch from global
+Codex model, provider, and reasoning settings. Authentication still uses the
+existing CLI login. `summarizer.model` selects the model explicitly; null uses
+the CLI's built-in default. Use a CLI version supporting `--ignore-user-config`
+(verified with 0.153.4). The current example selects `gpt-6.1-sol`; use an
+up-to-date CLI that accepts that model for your login.
+
+`summarizer.reasoning_effort` optionally sets `model_reasoning_effort` explicitly
+for each CLI invocation. The example uses `medium`; omission or null leaves the
+CLI default in effect. The selected model must support the effort level.
+
 ## Output contract
 
 Each successful run creates one UTF-8 Markdown file. It contains exactly these top-level sections, in this order:

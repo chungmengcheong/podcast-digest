@@ -38,7 +38,7 @@ For every point use this structure:
 + --> <conclusion stated in the discussion> (<supporting evidence>) 
 + --> <if any implication, forecast, or recommendation stated in the discussion>. 
 Put qualitative or quantitative evidence in parentheses immediately after the step it supports. Put each element of the logic chain on a new line. 
-- **Counterpoint or disagreement:** <material differing claim, logic, or evidence; omit this bullet when none is material>
+- **Counterpoint or disagreement:** <material differing claim, logic, or evidence stated in the discussion; omit this bullet when none is material>
 
 Example for logic chain:
 
